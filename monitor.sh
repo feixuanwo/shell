@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#linux服务器监控
 #set -x
 2012-02-25
 #version: 2.0
