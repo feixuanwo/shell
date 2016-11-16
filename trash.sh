@@ -6,16 +6,15 @@ TRASHTIME=$(date +"%F_%T")
 rmDirTag=0                              #1:with -r or -rf;0:without -r or -rf
 rmStatus=0                              #0:exit with no error;1:exit with errors
 
-allowPath=/home/weblogic/test
+if (( $# < 1 )); then
+    echo "rm: missing operand"
+    exit 1
+fi
 
 if [ ! -d $REMOVEPATH ]; then
-   mkdir $REMOVEPATH
+    mkdir $REMOVEPATH
 fi
 
-if (( $# < 1 )); then
-   echo "rm: missing operand"
-   exit 1
-fi
 
 #with or without param -r or -rf
 for i in $@ ; do
@@ -42,6 +41,13 @@ function checkPath() {
 for i in $@ ; do
     #skip -rf and -r
     if [ $i = "-rf" -o $i = "-r" ]; then
+        continue
+    fi
+     
+    #no exist file or path
+    if [ ! -d $i -o ! -f $i ]; then
+        echo -e "rm: cannot remove \`$i': No such file or directory"
+        rmStatus=1
         continue
     fi
 
